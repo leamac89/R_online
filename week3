@@ -1,0 +1,28 @@
+# Create a cached matrix object
+makeCacheMatrix <- function(mat = matrix(sample(1:50, 9), 3, 3)) {
+  cache <- list(matrix = mat, solve = NULL)
+  
+  setMatrix <- function(new_mat) {
+    cache$matrix <- new_mat
+    cache$solve <- NULL
+  }
+  
+  getMatrix <- function() cache$matrix
+  
+  cacheSolve <- function(...) {
+    if (is.null(cache$solve)) {
+      cat("Calculating inverse matrix...\n")
+      cache$solve <- solve(cache$matrix, ...)
+    } else {
+      cat("Using cached inverse matrix...\n")
+    }
+    cache$solve
+  }
+  
+  list(setMatrix = setMatrix, getMatrix = getMatrix, cacheSolve = cacheSolve)
+}
+
+# Solve a cached matrix
+cacheSolve <- function(cache) {
+  cache$cacheSolve()
+}
